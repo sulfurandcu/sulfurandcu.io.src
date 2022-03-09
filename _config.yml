@@ -13,7 +13,7 @@ language: zh-CN                                                                 
 timezone: Asia/Shanghai                                                         # 時區
 
 #                                                                       網址配置
-url: https://sulfurandcu.github.io/                                             # 網址
+url: https://sulfurandcu.github.io/sulfurandcu.io                               # 網址
 root: /                                                                         # 網站根目錄
 permalink: :id.html #:year/:month/:title.html                                   # 文章鏈接的格式
 permalink_defaults:                                                             # 文章鏈接缺省值
