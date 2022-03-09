@@ -1,0 +1,19 @@
+# gitignore
+
+# normal rules (sorted alphabetically)
+.*
+
+# git files that we don't want to ignore even if they are dot-files
+!.gitignore
+
+/node_modules/
+/public/
+/themes/
+
+/source/google*
+/source/baidu_verify_*
+
+/debug.log
+/db.json
+/package-lock.json
+/yarn.lock
