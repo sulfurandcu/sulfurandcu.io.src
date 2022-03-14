@@ -1,9 +1,12 @@
-# 配置文件 修改後需要執行 hexo s 重啓本地服務器
-# Hexo Configuration
-# https://github.com/hexojs/hexo/
-# https://hexo.io/docs/configuration.html
+################################################################################
+#                              Hexo Configuration                              #
+################################################################################
 
-#                                                                       網站配置
+################################################################################
+#                                   基礎配置                                   #
+################################################################################
+
+# 網站配置
 title: ㄅㄆㄇㄈ                                                                 # 標題
 subtitle: bopomofo                                                              # 標題
 description: 枸杞養生  亦能續命                                                 # 描述
@@ -12,15 +15,16 @@ author: 硫及銅                                                               
 language: zh-CN                                                                 # 語言
 timezone: Asia/Shanghai                                                         # 時區
 
-#                                                                       網址配置
-url: https://sulfurandcu.github.io/                                             # 網址
+# 網址配置
+url: https://sulfurandcu.github.io/sulfurandcu.io/                              # 網址
 root: /sulfurandcu.io/                                                          # 網站根目錄
 permalink: :id.html #:year/:month/:title.html                                   # 文章鏈接的格式
 permalink_defaults:                                                             # 文章鏈接缺省值
-pretty_urls:                                                                    # 美化地址
-  trailing_index: true                                                            # 顯示index.html
+pretty_urls:
+  trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
+  trailing_html: true # Set to false to remove trailing '.html' from permalinks
 
-#                                                                       目錄配置
+# 目錄配置
 source_dir: source                                                              # 資源文件夾，存放網站的所有資源
 public_dir: public                                                              # 發佈文件夾, 存放生成的站點文件
 tag_dir: tags                                                                   # 標籤文件夾, 實際存放在source/tags中
@@ -30,14 +34,15 @@ code_dir: downloads/code                                                        
 i18n_dir: :lang                                                                 # 國際化目錄, 默認跟language相同
 skip_render: [google**, baidu_verify_**]                                        # 不需要渲染的文件或文件夾, 放在[]中
 
-#                                                                       寫作配置
+# 文章配置
 new_post_name: :title.md                                                        # 新文章的默認名稱
-default_layout: post                                                            # 默認佈局
+default_layout: post                                                            # 新文章的默認樣式
+auto_spacing: false                                                             # 中文英文之間添加空格
 titlecase: false                                                                # 標題首字母轉換成大寫
 external_link:                                                                  # 在新標籤頁中打開網頁
   enable: true                                                                    # 使能
   field: site                                                                     # 應用到整個網站
-  exclude:                                                                        # 除了
+  exclude: ''                                                                     # 除了
 filename_case: 0                                                                # 把文件名稱轉換爲(0)不轉(1)小寫(2)大寫
 render_drafts: false                                                            # 顯示草稿
 post_asset_folder: true                                                         # 啓用Asset目錄, 文章資源目錄
@@ -50,47 +55,78 @@ highlight:                                                                      
   enable: true                                                                    # 是否啓用代碼塊
   line_number: false                                                              # 是否顯示行數
   auto_detect: false                                                              # 是否自動檢測語言
-  tab_replace: false                                                              # 是否將tab替換爲空格
+  tab_replace: ''                                                                 # 是否將tab替換爲空格
+  wrap: true
+  hljs: false
+prismjs:
+  enable: false
+  preprocess: true
+  line_number: true
+  tab_replace: ''
 
-#                                                                       日期時間
-# http://momentjs.com/docs/#/displaying/format/
-date_format: YYYY-MM-DD                                                         # 日期格式
-time_format: HH:mm:ss                                                           # 時間格式
-updated_option: date                                                            # 使用文章中的日期作爲更新日期
-
-#                                                                       分類標籤
+# 分類標籤
 default_category: uncategorized                                                 # 默認分類
 category_map:                                                                   # 分類別名
 tag_map:                                                                        # 標籤別名
 
-#                                                                       分頁配置
+# 日期時間
+date_format: YYYY-MM-DD                                                         # 日期格式
+time_format: HH:mm:ss                                                           # 時間格式
+updated_option: date                                                            # 使用文章中的日期作爲更新日期
+
+# 分頁配置
 per_page: 10                                                                    # 每頁個數 (0關閉分頁功能)
 pagination_dir: page                                                            # 分頁路徑
 
-##                                                                              # 首頁分頁 hexo-generator-index
-index_generator:
-  path: ''
-  per_page: 10
-  order_by: -date
 
-##                                                                              # 歸檔分頁 hexo-generator-archive
+################################################################################
+#                                   擴展配置                                   #
+################################################################################
+
+# 主題配置
+theme: next
+
+# 包含排除（options only apply to the 'source/' folder）
+include:
+exclude:
+ignore:
+
+# Metadata elements
+# https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
+meta_generator: true
+
+# 歸檔生成
+# 插件下載：npm install --no-optional --save hexo-generator-archive
 archive_generator:
   per_page: 20
   yearly: true
   monthly: true
 
-##                                                                              # 標籤分頁 hexo-generator-tag
+# 標籤生成
+# 插件下載：npm install --no-optional --save hexo-generator-tag
 tag_generator:
   per_page: 10
 
-#                                                                       拓展配置
-# https://hexo.io/themes/
-# https://hexo.io/plugins/
-##                                                                              # 主題設置
-theme: next
+# 首頁生成
+# 插件下載：npm install --no-optional --save hexo-generator-index
+index_generator:
+  path: ''
+  per_page: 10
+  order_by: -date
 
-##                                                                              # 訂閱信息
-## 插件: npm install --no-optional --save hexo-generator-feed
+# 部署配置
+# 插件下載：npm install --no-optional --save hexo-deployer-git
+deploy:
+  type: git
+  repo: git@github.com:sulfurandcu/sulfurandcu.io.git
+  branch: main
+  # - type: git
+  #   repo: git@github.com:sulfurandcu/sulfurandcu.io.git
+  #   branch: main
+  # - type: baidu_url_submitter
+
+# 訂閱信息
+# 插件下載：npm install --no-optional --save hexo-generator-feed
 feed:
   type: atom
   path: atom.xml
@@ -102,452 +138,22 @@ feed:
   order_by: -date
   icon: icon.png
 
-#                                                                               # 統計信息
-# 插件: npm install --no-optional --save hexo-symbols-count-time
-symbols_count_time:
-  symbols: false
-  time: false
-  total_symbols: false
-  total_time: false
-
-##                                                                              # 站點地圖
-## 插件: npm install --no-optional --save hexo-generator-sitemap
-## 插件: npm install --no-optional --save hexo-generator-baidu-sitemap
-## sitemap:
-##   path: sitemap.xml
-## baidusitemap:
-##   path: baidusitemap.xml
-
-##                                                                              # 自動提交
-## 插件: npm install --no-optional --save hexo-baidu-url-submit
-## baidu_url_submit:
-##   count: 1                                ## 提交最新的一個鏈接
-##   host: https://sulfurandcu.github.io/    ## 在百度站長平臺中註冊的域名
-##   token: ****************                 ## 請注意這是您的祕鑰，所以請不要把博客源代碼發佈在公衆倉庫裏!
-##   path: baidu_urls.txt                    ## 文本文檔的地址，新鏈接會保存在此文本文檔裏
-
-##                                                                              # 發佈設置
-## https://hexo.io/docs/deployment.html
-## 插件: npm install --no-optional --save hexo-generator-index
-deploy:
-  type: git
-  repo: git@github.com:sulfurandcu/sulfurandcu.io.git
-  branch: main
-## - type: git
-##   repo: git@github.com:sulfurandcu/sulfurandcu.io.git
-##   branch: main
-## - type: baidu_url_submitter
-
-prismjs:
-  enable: false
-
-theme_config:
-
-  # ===============================================================
-  # It's recommended to use Alternate Theme Config to configure the theme
-  # Modifying this file may result in merge conflict
-  # See: https://theme-next.js.org/docs/getting-started/configuration
-  # ===============================================================
-
-  # ---------------------------------------------------------------
-  # Theme Core Configuration Settings
-  # See: https://theme-next.js.org/docs/theme-settings/
-  # ---------------------------------------------------------------
-
-  # If false, merge configs from `_data/next.yml` into default configuration (rewrite).
-  # If true, will fully override default configuration by options from `_data/next.yml` (override). Only for NexT settings.
-  # And if true, all config from default NexT `_config.yml` must be copied into `next.yml`. Use if you know what you are doing.
-  # Useful if you want to comment some options from NexT `_config.yml` by `next.yml` without editing default config.
-  override: false
-
-  # Allow to cache content generation. Introduced in NexT v6.0.0.
-  cache:
-    enable: true
-
-  # Remove unnecessary files after hexo generate.
-  minify: false
-
-  # Define custom file paths.
-  # Create your custom files in site directory `source/_data` and uncomment needed files below.
-  custom_file_path:
-    #head: source/_data/head.njk
-    #header: source/_data/header.njk
-    #sidebar: source/_data/sidebar.njk
-    #postMeta: source/_data/post-meta.njk
-    #postBodyEnd: source/_data/post-body-end.njk
-    #footer: source/_data/footer.njk
-    #bodyEnd: source/_data/body-end.njk
-    variable: source/_data/variables.styl
-    #mixin: source/_data/mixins.styl
-    style: source/_data/styles.styl
-
-
-  # ---------------------------------------------------------------
-  # Site Information Settings
-  # See: https://theme-next.js.org/docs/getting-started/
-  # ---------------------------------------------------------------
-
-  favicon:
-    small: /images/favicon-16x16-next.png
-    medium: /images/favicon-32x32-next.png
-    apple_touch_icon: /images/apple-touch-icon-next.png
-    safari_pinned_tab: /images/logo.svg
-    #android_manifest: /images/manifest.json
-    #ms_browserconfig: /images/browserconfig.xml
-
-  footer:
-    # Specify the date when the site was setup. If not defined, current year will be used.
-    since: 2018
-
-    # Icon between year and copyright info.
-    icon:
-      # Icon name in Font Awesome. See: https://fontawesome.com/icons
-      name: fa fa-fingerprint
-      # If you want to animate the icon, set it to true.
-      animated: false
-      # Change the color of icon, using Hex Code.
-      color: "#808080"
-
-    # If not defined, `author` from Hexo `_config.yml` will be used.
-    copyright: sulfurandcu
-
-    # Powered by Hexo & NexT
-    powered: true
-
-    # Beian ICP and gongan information for Chinese users. See: http://www.beian.miit.gov.cn, http://www.beian.gov.cn
-    beian:
-      enable: false
-      icp:
-      # The digit in the num of gongan beian.
-      gongan_id:
-      # The full num of gongan beian.
-      gongan_num:
-      # The icon for gongan beian. See: http://www.beian.gov.cn/portal/download
-      gongan_icon_url:
-
-  # Show multilingual switcher in footer.
-  language_switcher: false
-
-  # hexo-generator-feed required for rss support. Leave rss as blank to use site's feed link.
-  # Set rss to false to disable feed link. Set rss to specific value if you have burned your feed already.
-  rss: #/atom.xml
-
-  # Creative Commons 4.0 International License.
-  # See: https://creativecommons.org/share-your-work/licensing-types-examples
-  # Available values of license: by | by-nc | by-nc-nd | by-nc-sa | by-nd | by-sa | zero
-  # You can set a language value if you prefer a translated version of CC license, e.g. deed.zh
-  # CC licenses are available in 39 languages, you can find the specific and correct abbreviation you need on https://creativecommons.org
-  creative_commons:
-    license: by-sa
-    sidebar: true
-    post: true
-    language:
-
-
-  # ---------------------------------------------------------------
-  # Scheme Settings
-  # ---------------------------------------------------------------
-
-  # Schemes
-  #scheme: Muse
-  #scheme: Mist
-  #scheme: Pisces
-  scheme: Gemini
-
-  # Dark Mode
-  darkmode: false
-
-
-  # ---------------------------------------------------------------
-  # Menu Settings
-  # ---------------------------------------------------------------
-
-  # Usage: `Key: /link/ || icon`
-  # Key is the name of menu item. If the translation for this item is available, the translated text will be loaded, otherwise the Key name will be used. Key is case-senstive.
-  # Value before `||` delimiter is the target link, value after `||` delimiter is the name of Font Awesome icon.
-  # When running the site in a subdirectory (e.g. yoursite.com/blog), remove the leading slash from link value (/archives -> archives).
-  # External url should start with http:// or https://
-  menu:
-    home: / || fa fa-home
-    about: /about/ || fa fa-user
-    tags: /tags/ || fa fa-th
-    categories: /categories/ || fa fa-th
-    archives: /archives/ || fa fa-archive
-    #schedule: /schedule/ || fa fa-calendar
-    #sitemap: /sitemap.xml || fa fa-sitemap
-    #commonweal: /404/ || fa fa-heartbeat
-
-  # Enable / Disable menu icons / item badges.
-  menu_settings:
-    icons: true
-    badges: false
-
-
-  # ---------------------------------------------------------------
-  # Sidebar Settings
-  # See: https://theme-next.js.org/docs/theme-settings/sidebar
-  # ---------------------------------------------------------------
-
-  sidebar:
-    # Sidebar Position.
-    position: left
-    #position: right
-
-    # Manual define the sidebar width. If commented, will be default for:
-    # Muse | Mist: 320
-    # Pisces | Gemini: 240
-    #width: 300
-
-    # Sidebar Display (only for Muse | Mist), available values:
-    #  - post    expand on posts automatically. Default.
-    #  - always  expand for all pages automatically.
-    #  - hide    expand only when click on the sidebar toggle icon.
-    #  - remove  totally remove sidebar including sidebar toggle.
-    display: post
-
-    # Sidebar padding in pixels.
-    padding: 18
-    # Sidebar offset from top menubar in pixels (only for Pisces | Gemini).
-    offset: 12
-
-  # Sidebar Avatar
-  avatar:
-    # Replace the default image and set the url here.
-    url: /images/avatar.png
-    # If true, the avatar will be dispalyed in circle.
-    rounded: true
-    # If true, the avatar will be rotated with the cursor.
-    rotated: false
-
-  # Posts / Categories / Tags in sidebar.
-  site_state: true
-
-  # Social Links
-  # Usage: `Key: permalink || icon`
-  # Key is the link label showing to end users.
-  # Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.
-  social:
-    GitHub: https://github.com/sulfurandcu || fab fa-github
-    E-Mail: mailto:sulfurandcu@gmail.com || fa fa-envelope
-    #Weibo: https://weibo.com/yourname || fab fa-weibo
-    #Google: https://plus.google.com/yourname || fab fa-google
-    #Twitter: https://twitter.com/yourname || fab fa-twitter
-    #FB Page: https://www.facebook.com/yourname || fab fa-facebook
-    #StackOverflow: https://stackoverflow.com/yourname || fab fa-stack-overflow
-    #YouTube: https://youtube.com/yourname || fab fa-youtube
-    #Instagram: https://instagram.com/yourname || fab fa-instagram
-    #Skype: skype:yourname?call|chat || fab fa-skype
-
-  social_icons:
-    enable: true
-    icons_only: true
-    transition: false
-
-  # Blog rolls
-  links_settings:
-    icon: fa fa-globe
-    title: Links
-    # Available values: block | inline
-    layout: block
-
-  links:
-    #Title: http://yoursite.com
-
-  # Table of Contents in the Sidebar
-  # Front-matter variable (unsupport wrap expand_all).
-  toc:
-    enable: true
-    # Automatically add list number to toc.
-    number: false
-    # If true, all words will placed on next lines if header width longer then sidebar width.
-    wrap: false
-    # If true, all level of TOC in a post will be displayed, rather than the activated part of it.
-    expand_all: false
-    # Maximum heading depth of generated toc.
-    max_depth: 6
-
-
-  # ---------------------------------------------------------------
-  # Post Settings
-  # See: https://theme-next.js.org/docs/theme-settings/posts
-  # ---------------------------------------------------------------
-
-  # Automatically excerpt description in homepage as preamble text.
-  excerpt_description: true
-
-  # Read more button
-  # If true, the read more button will be displayed in excerpt section.
-  read_more_btn: true
-
-  # Post meta display settings
-  post_meta:
-    item_text: true
-    created_at: true
-    updated_at:
-      enable: true
-      another_day: true
-    categories: true
-
-  # Post wordcount display settings
-  # Dependencies: https://github.com/next-theme/hexo-word-counter
-  symbols_count_time:
-    separated_meta: true
-    item_text_post: true
-    item_text_total: false
-
-  # Use icon instead of the symbol # to indicate the tag at the bottom of the post
-  tag_icon: false
-
-  # Post edit
-  # Easily browse and edit blog source code online.
-  post_edit:
-    enable: false
-    url: https://github.com/user-name/repo-name/tree/branch-name/subdirectory-name/ # Link for view source
-    #url: https://github.com/user-name/repo-name/edit/branch-name/subdirectory-name/ # Link for fork & edit
-  # Show previous post and next post in post footer if exists
-  # Available values: left | right | false
-  post_navigation: left
-
-
-  # ---------------------------------------------------------------
-  # Custom Page Settings
-  # See: https://theme-next.js.org/docs/theme-settings/custom-pages
-  # ---------------------------------------------------------------
-
-  # TagCloud settings for tags page.
-  tagcloud:
-    min: 12 # Minimun font size in px
-    max: 30 # Maxium font size in px
-    amount: 200 # Total amount of tags
-    orderby: name # Order of tags
-    order: 1 # Sort order
-
-  # ---------------------------------------------------------------
-  # Misc Theme Settings
-  # See: https://theme-next.js.org/docs/theme-settings/
-  # ---------------------------------------------------------------
-
-  # Set the text alignment in posts / pages.
-  text_align:
-    # Available values: start | end | left | right | center | justify | justify-all | match-parent
-    desktop: justify
-    mobile: justify
-
-  # Reduce padding / margin indents on devices with narrow width.
-  mobile_layout_economy: false
-
-  # Android Chrome header panel color ($brand-bg / $headband-bg => $black-deep).
-  android_chrome_color: "#222"
-
-  # Custom Logo (Do not support scheme Mist)
-  custom_logo: #/uploads/custom-logo.jpg
-
-  codeblock:
-    # Code Highlight theme
-    # All available themes: https://theme-next.js.org/highlight/
-    theme:
-      light: dark
-      dark: dark
-    prism:
-      light: prism-material-oceanic
-      dark: prism-material-oceanic
-    # Add copy button on codeblock
-    copy_button:
-      enable: false
-      # Available values: default | flat | mac
-      style: flat
-
-  back2top:
-    enable: true
-    # Back to top in sidebar.
-    sidebar: true
-    # Scroll percent label in b2t button.
-    scrollpercent: true
-
-
-  # ---------------------------------------------------------------
-  # Font Settings
-  # See: https://theme-next.js.org/docs/theme-settings/#Fonts-Customization
-  # ---------------------------------------------------------------
-  # Find fonts on Google Fonts (https://fonts.google.com)
-  # All fonts set here will have the following styles:
-  #   light | light italic | normal | normal italic | bold | bold italic
-  # Be aware that setting too much fonts will cause site running slowly
-  # ---------------------------------------------------------------
-  # To avoid space between header and sidebar in scheme Pisces / Gemini, Web Safe fonts are recommended for `global` (and `title`):
-  # Arial | Tahoma | Helvetica | Times New Roman | Courier New | Verdana | Georgia | Palatino | Garamond | Comic Sans MS | Trebuchet MS
-  # ---------------------------------------------------------------
-
-  font:
-    enable: true
-
-    # Uri of fonts host, e.g. https://fonts.googleapis.com (Default).
-    host: #https://fonts.loli.net
-
-    # Font options:
-    # `external: true` will load this font family from `host` above.
-    # `family: Times New Roman`. Without any quotes.
-    # `size: x.x`. Use `em` as unit. Default: 1 (16px)
-
-    # Global font settings used for all elements inside <body>.
-    global:
-      external: true
-      family: EB Garamond
-      size:
-
-    # Font settings for site title (.site-title).
-    title:
-      external: true
-      family: EB Garamond
-      size:
-
-    # Font settings for headlines (<h1> to <h6>).
-    headings:
-      external: true
-      family: EB Garamond
-      size:
-
-    # Font settings for posts (.post-body).
-    posts:
-      external: true
-      family: EB Garamond
-
-    # Font settings for <code> and code blocks.
-    codes:
-      external: true
-      family: Iosevka Term Curly Slab
-
-
-  # ---------------------------------------------------------------
-  # SEO Settings
-  # See: https://theme-next.js.org/docs/theme-settings/seo
-  # ---------------------------------------------------------------
-
-  # Disable Baidu transformation on mobile devices.
-  disable_baidu_transformation: false
-
-  # If true, site-subtitle will be added to index page.
-  # Remember to set up your site-subtitle in Hexo `_config.yml` (e.g. subtitle: Subtitle)
-  index_with_subtitle: false
-
-  # Automatically add external URL with Base64 encrypt & decrypt.
-  exturl: false
-
-  # Google Webmaster tools verification.
-  # See: https://www.google.com/webmasters
-  google_site_verification:
-
-  # Bing Webmaster tools verification.
-  # See: https://www.bing.com/webmaster
-  bing_site_verification:
-
-  # Yandex Webmaster tools verification.
-  # See: https://webmaster.yandex.ru
-  yandex_site_verification:
-
-  # Baidu Webmaster tools verification.
-  # See: https://ziyuan.baidu.com/site
-  baidu_site_verification:
-
-  # Enable baidu push so that the blog will push the url to baidu automatically which is very helpful for SEO.
-  baidu_push: false
+################################################################################
+#                                   網站優化                                   #
+################################################################################
+
+# 站點地圖
+# 插件下載：npm install --no-optional --save hexo-generator-sitemap
+# 插件下載：npm install --no-optional --save hexo-generator-baidu-sitemap
+# sitemap:
+#   path: sitemap.xml
+# baidusitemap:
+#   path: baidusitemap.xml
+
+# 自動提交
+# 插件下載：npm install --no-optional --save hexo-baidu-url-submit
+# baidu_url_submit:
+#   count: 1                                ## 提交最新的一個鏈接
+#   host: https://sulfurandcu.github.io/    ## 在百度站長平臺中註冊的域名
+#   token: ****************                 ## 請注意這是您的祕鑰，所以請不要把博客源代碼發佈在公衆倉庫裏!
+#   path: baidu_urls.txt                    ## 文本文檔的地址，新鏈接會保存在此文本文檔裏
