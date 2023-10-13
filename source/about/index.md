@@ -6,6 +6,7 @@ title: ME
 <center><b>我是誰　從哪來　到哪去</b></center>
 <center><b>＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝</b></center>
 <br>
+<font face="EB Garamond">
 <center>well</center>
 <br>
 <center>i'm sulfurandcu(t)</center>
@@ -16,7 +17,8 @@ title: ME
 <br>
 <br>
 <br>
-<center>🐞</center>
+<center><a href="./about">🔘</a></center>
+</font>
 <br>
 <br>
 <br>
