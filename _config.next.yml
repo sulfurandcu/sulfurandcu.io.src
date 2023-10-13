@@ -125,9 +125,9 @@ darkmode: false
 menu:
   home: / || fa fa-home
   about: /about/ || fa fa-user
-  tags: /tags/ || fa fa-th
-  categories: /categories/ || fa fa-th
   archives: /archives/ || fa fa-archive
+  categories: /categories/ || fa fa-th
+  tags: /tags/ || fa fa-tags
   #schedule: /schedule/ || fa fa-calendar
   #sitemap: /sitemap.xml || fa fa-sitemap
   #commonweal: /404/ || fa fa-heartbeat
@@ -365,7 +365,7 @@ font:
   # Font settings for posts (.post-body).
   posts:
     external: true
-    family: EB Garamond
+    family: Iosevka Fixed Slab
 
   # Font settings for <code> and code blocks.
   codes:
