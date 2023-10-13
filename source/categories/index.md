@@ -1,4 +1,4 @@
 ---
-title: 類別
+title: 分類
 type: "categories"
 ---
