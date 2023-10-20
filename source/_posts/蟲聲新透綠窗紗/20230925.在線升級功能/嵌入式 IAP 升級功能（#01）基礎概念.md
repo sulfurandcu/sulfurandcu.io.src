@@ -1,5 +1,6 @@
 ---
 title: 嵌入式 IAP 升級功能（#01）基礎概念
+id: clnyhr2n2004x10rq71zl3lqj
 date: 2023-10-01 00:00:01
 tags: [嵌入式軟件開發, 在線升級]
 categories: [開發筆記]

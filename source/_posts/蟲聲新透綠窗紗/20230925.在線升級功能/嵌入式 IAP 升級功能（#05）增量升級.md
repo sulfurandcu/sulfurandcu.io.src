@@ -1,5 +1,6 @@
 ---
 title: 嵌入式 IAP 升級功能（#05）增量升級
+id: clnyhr2n4005710rqfv00ckub
 date: 2023-10-01 00:00:05
 tags: [嵌入式軟件開發, 在線升級]
 categories: [開發筆記]

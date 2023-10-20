@@ -1,5 +1,6 @@
 ---
 title: 嵌入式 IAP 升級功能（#00）目錄索引
+id: clnyhr2n2004t10rq7rdi2ftx
 date: 2023-10-01 00:00:00
 tags: [嵌入式軟件開發, 單片機, iap, bootloader]
 categories: [開發筆記]

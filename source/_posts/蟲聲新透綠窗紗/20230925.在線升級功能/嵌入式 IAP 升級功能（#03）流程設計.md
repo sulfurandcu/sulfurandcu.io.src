@@ -1,5 +1,6 @@
 ---
 title: 嵌入式 IAP 升級功能（#03）流程設計
+id: clnyhr2n3005010rqf3gcgp39
 date: 2023-10-01 00:00:03
 tags: [嵌入式軟件開發, 在線升級]
 categories: [開發筆記]
