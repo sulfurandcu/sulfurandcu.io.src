@@ -56,11 +56,11 @@ categories: [開發筆記]
 
 爲了保證升級能夠順利進行，除了新程序或者更新補丁外，我們還要向設備發送一些附加信息，這些附加信息通常被添加至升級文件的頭部。
 
-![圖片加載失敗](update.head.png)
+![](update.head.png)
 
 **變長包頭的優勢**
 
-![圖片加載失敗](update.head.scalable.png)
+![](update.head.scalable.png)
 
 {% note info no-icon %}
 升級包頭我建議做成變長的，萬一哪天包頭長度不夠用了，擴展後也能兼容現場的老設備。
@@ -70,25 +70,25 @@ categories: [開發筆記]
 
 ### 未經壓縮的全量升級文件結構
 
-![圖片加載失敗](update.file.1.raw.full.png)
+![](update.file.1.raw.full.png)
 
 ### 經過壓縮的全量升級文件結構
 
-![圖片加載失敗](update.file.2.zip.full.png)
+![](update.file.2.zip.full.png)
 
 ### 經過壓縮的增量升級文件結構
 
-![圖片加載失敗](update.file.4.zip.diff.png)
+![](update.file.4.zip.diff.png)
 
 ## 升級方案
 
 ### 未經壓縮的全量升級 + 經過壓縮的增量升級
 
-![圖片加載失敗](update.plan.1.raw.full+zip.diff.png)
+![](update.plan.1.raw.full+zip.diff.png)
 
 ### 經過壓縮的全量升級 + 經過壓縮的增量升級
 
-![圖片加載失敗](update.plan.2.zip.full+zip.diff.png)
+![](update.plan.2.zip.full+zip.diff.png)
 
 ## 升級流程
 

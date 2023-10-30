@@ -10,7 +10,7 @@ categories: [開發筆記]
 <center>which one is better?</center>
 <br>
 
-![圖片加載失敗](/images/cover.png)
+![](/images/cover.png)
 
 <!-- more -->
 
