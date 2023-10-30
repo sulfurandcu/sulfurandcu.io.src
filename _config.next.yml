@@ -581,3 +581,4 @@ local_search:
   # Preload the search data when the page loads.
   preload: false
 
+fancybox: true
