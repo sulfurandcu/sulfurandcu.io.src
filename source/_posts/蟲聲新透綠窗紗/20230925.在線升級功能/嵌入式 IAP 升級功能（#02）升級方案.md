@@ -6,11 +6,13 @@ tags: [嵌入式軟件開發, 在線升級]
 categories: [開發筆記]
 ---
 
-<center>引導程序主導｜應用程序主導</center>
 <center>which one is better?</center>
 <br>
 
-![](/images/cover.png)
+{% mermaid flowchart LR %}
+%%{init: { "flowchart": { "curve": "basis" } } }%%
+A(在引導程序中集成通信協議棧與解壓還原算法)~~~B(在應用程序中集成通信協議棧與解壓還原算法)
+{% endmermaid %}
 
 <!-- more -->
 
@@ -150,7 +152,6 @@ categories: [開發筆記]
 </tr>
 </thead>
 <tbody>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">引導程序存儲區<br>bootloader</td>
     <td align="center">中斷向量表</td>
@@ -158,7 +159,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">引導程序</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">應用程序存儲區</td>
     <td align="center">重定向的中斷向量表</td>
@@ -166,7 +166,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">應用程序</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center">參數數據存儲區</td>
     <td align="center">掉電不丟失的系統參數</td>
@@ -186,7 +185,6 @@ categories: [開發筆記]
 </tr>
 </thead>
 <tbody>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">引導程序存儲區<br>bootloader</td>
     <td align="center">中斷向量表</td>
@@ -194,7 +192,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">引導程序</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">應用程序存儲區</td>
     <td align="center">重定向的中斷向量表</td>
@@ -202,7 +199,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">應用程序</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">升級數據存儲區</td>
     <td align="center">解壓後的新版程序</td>
@@ -210,7 +206,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">接收到的壓縮文件</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center">參數數據存儲區</td>
     <td align="center">掉電不丟失的系統參數</td>
@@ -228,7 +223,6 @@ categories: [開發筆記]
 </tr>
 </thead>
 <tbody>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">引導程序存儲區<br>bootloader</td>
     <td align="center">中斷向量表</td>
@@ -236,7 +230,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">引導程序</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">應用程序存儲區</td>
     <td align="center">重定向的中斷向量表</td>
@@ -244,7 +237,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">應用程序</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center">參數數據存儲區</td>
     <td align="center">掉電不丟失的系統參數</td>
@@ -257,7 +249,6 @@ categories: [開發筆記]
 </tr>
 </thead>
 <tbody>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">升級數據存儲區</td>
     <td align="center">解壓後的新版程序</td>
@@ -292,7 +283,6 @@ categories: [開發筆記]
 </tr>
 </thead>
 <tbody>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">引導程序存儲區<br>bootloader</td>
     <td align="center">中斷向量表</td>
@@ -300,7 +290,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">引導程序</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">應用程序存儲區<br>（1）</td>
     <td align="center">重定向的中斷向量表</td>
@@ -308,7 +297,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">應用程序</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">應用程序存儲區<br>（2）</td>
     <td align="center">重定向的中斷向量表</td>
@@ -316,7 +304,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">應用程序</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center">參數數據存儲區</td>
     <td align="center">掉電不丟失的系統參數</td>
@@ -348,7 +335,6 @@ categories: [開發筆記]
 </tr>
 </thead>
 <tbody>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">引導程序存儲區<br>bootloader</td>
     <td align="center">中斷向量表</td>
@@ -356,7 +342,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">引導程序</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">應用程序存儲區<br>（1）</td>
     <td align="center">重定向的中斷向量表</td>
@@ -364,7 +349,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">應用程序</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">應用程序存儲區<br>（2）</td>
     <td align="center">重定向的中斷向量表</td>
@@ -372,7 +356,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">應用程序</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">升級數據存儲區</td>
     <td align="center">解壓後的新版程序</td>
@@ -380,7 +363,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">接收到的壓縮文件</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center">參數數據存儲區</td>
     <td align="center">掉電不丟失的系統參數</td>
@@ -398,7 +380,6 @@ categories: [開發筆記]
 </tr>
 </thead>
 <tbody>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">引導程序存儲區<br>bootloader</td>
     <td align="center">中斷向量表</td>
@@ -406,7 +387,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">引導程序</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">應用程序存儲區<br>（1）</td>
     <td align="center">重定向的中斷向量表</td>
@@ -414,7 +394,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">應用程序</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">應用程序存儲區<br>（2）</td>
     <td align="center">重定向的中斷向量表</td>
@@ -422,7 +401,6 @@ categories: [開發筆記]
 <tr>
     <td align="center">應用程序</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center">參數數據存儲區</td>
     <td align="center">掉電不丟失的系統參數</td>
@@ -435,7 +413,6 @@ categories: [開發筆記]
 </tr>
 </thead>
 <tbody>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">升級數據存儲區</td>
     <td align="center">解壓後的新版程序</td>

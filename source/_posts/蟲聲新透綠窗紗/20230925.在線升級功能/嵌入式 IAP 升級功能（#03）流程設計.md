@@ -6,10 +6,11 @@ tags: [嵌入式軟件開發, 在線升級]
 categories: [開發筆記]
 ---
 
-<center>引導程序流程設計｜應用程序流程設計</center>
-<br>
-
-![](/images/cover.png)
+{% mermaid flowchart TB %}
+%%{init: { "flowchart": { "curve": "basis" } } }%%
+A1(引導程序之流程)-->B1(......)-->C1(跳轉至應用程序)
+A2(應用程序之流程)-->B2(......)-->C2(跳轉至引導程序)
+{% endmermaid %}
 
 <!-- more -->
 

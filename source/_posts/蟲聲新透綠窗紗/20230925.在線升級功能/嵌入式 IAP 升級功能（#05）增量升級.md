@@ -17,8 +17,6 @@ categories: [開發筆記]
 不過 bsdiff + quicklz 方案的內存開銷太大，因此不建議使用。
 {% endnote %}
 
-<!-- more -->
-
 ## 全量升級 & 增量升級
 
 增量升級確實降低了傳輸過程中的數據量，但也帶來了版本管理複雜的問題，所以說不能因爲有了增量升級，全量升級就不用了。
@@ -27,7 +25,6 @@ categories: [開發筆記]
 
 <table>
 <tbody>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">全量升級</td>
     <td align="center">未經壓縮的新版程序</td>
@@ -37,7 +34,6 @@ categories: [開發筆記]
     <td align="center">經過壓縮的新版程序</td>
     <td align="center">（✔）</td>
 </tr>
-<!--  -->
 <tr>
     <td align="center" rowspan="2">增量升級</td>
     <td align="center">未經壓縮的差異文件</td>
@@ -50,13 +46,93 @@ categories: [開發筆記]
 </tbody>
 </table>
 
+<!-- more -->
+
 ## 升級包頭
 
 在線升級無非就是把新程序或者更新補丁發送給設備，設備收到後進行升級的過程。
 
 爲了保證升級能夠順利進行，除了新程序或者更新補丁外，我們還要向設備發送一些附加信息，這些附加信息通常被添加至升級文件的頭部。
 
-![](update.head.png)
+<table>
+<tbody>
+<tr>
+    <td align="center">魔術數字</td>
+    <td align="center">04B</td>
+    <td align="center">全量升級 ('Q','L','S','J')<br>增量升級 ('Z','L','S','J')</td>
+</tr>
+<tr>
+    <td align="center">包頭長度</td>
+    <td align="center">04B</td>
+    <td align="center">支持變長包頭 *</td>
+</tr>
+<tr>
+    <td align="center">文件摘要</td>
+    <td align="center">04B</td>
+    <td align="center">從「文件長度」之後開始計算</td>
+</tr>
+<tr>
+    <td align="center">文件長度</td>
+    <td align="center">04B</td>
+    <td align="center">從「文件長度」之後開始計算</td>
+</tr>
+<tr>
+    <td align="center">　</td>
+    <td align="center"></td>
+    <td align="center"></td>
+</tr>
+<tr>
+    <td align="center">產品型號</td>
+    <td align="center">08B</td>
+    <td align="center">產品一型 ('P','N','-','A','0','0','0','1')<br>產品二型 ('P','N','-','A','0','0','0','2')</td>
+</tr>
+<tr>
+    <td align="center">設備地址</td>
+    <td align="center">08B</td>
+    <td align="center">通配地址 (0xFFFFFFFFFFFFFFFF)<br>單點地址 (0x1111111111111111)</td>
+</tr>
+<tr>
+    <td align="center">　</td>
+    <td align="center"></td>
+    <td align="center"></td>
+</tr>
+<tr>
+    <td align="center">新程序 LEN 值</td>
+    <td align="center">04B</td>
+    <td align="center" rowspan="6">對舊程序進行摘要值校驗<br>或者<br>對舊程序進行差分還原時<br><br>某些可變字段必須以默認值進行處理</td>
+</tr>
+<tr>
+    <td align="center">舊程序 LEN 值</td>
+    <td align="center">04B</td>
+</tr>
+<tr>
+    <td align="center">新程序 CRC 值</td>
+    <td align="center">04B</td>
+</tr>
+<tr>
+    <td align="center">舊程序 CRC 值</td>
+    <td align="center">04B</td>
+</tr>
+<tr>
+    <td align="center">新程序 MD5 值</td>
+    <td align="center">16B</td>
+</tr>
+<tr>
+    <td align="center">舊程序 MD5 值</td>
+    <td align="center">16B</td>
+</tr>
+<tr>
+    <td align="center">......</td>
+    <td align="center"></td>
+    <td align="center"></td>
+</tr>
+<tr>
+    <td align="center">可以按需增加</td>
+    <td align="center"></td>
+    <td align="center"></td>
+</tr>
+</tbody>
+</table>
 
 **變長包頭的優勢**
 
@@ -68,17 +144,11 @@ categories: [開發筆記]
 
 ## 升級文件
 
-### 未經壓縮的全量升級文件結構
-
-![](update.file.1.raw.full.png)
-
-### 經過壓縮的全量升級文件結構
-
-![](update.file.2.zip.full.png)
-
-### 經過壓縮的增量升級文件結構
-
-![](update.file.4.zip.diff.png)
+{% grouppicture 3-3 %}
+![未經壓縮的全量升級文件結構](clnyhr2n4005710rqfv00ckub/update.file.1.raw.full.png)
+![經過壓縮的全量升級文件結構](clnyhr2n4005710rqfv00ckub/update.file.2.zip.full.png)
+![經過壓縮的增量升級文件結構](clnyhr2n4005710rqfv00ckub/update.file.4.zip.diff.png)
+{% endgrouppicture %}
 
 ## 升級方案
 
