@@ -8,13 +8,12 @@ categories: [開發筆記]
 
 ---
 
-[集成開發環境－GCC.ARM（#01）環境搭建](clo2c1l6o00dh1wrqd2o379jc.html)
-[集成開發環境－GCC.ARM（#02）代碼編譯](clo2c1l6400c71wrq3816hypq.html)
-[集成開發環境－GCC.ARM（#03）程序燒錄](clo2c1l6600ca1wrqbvuabt0b.html)
-[集成開發環境－GCC.ARM（#04）快捷任務](clo2c1l6700cd1wrqgjn53mgz.html)
-[集成開發環境－GCC.ARM（#05）程序調試](clo2c1l6600cb1wrqewhnb8ey.html)
-[集成開發環境－GCC.ARM（#06）遠程調試](clo2c1l6500c81wrqbkskaevk.html)
-[集成開發環境－DBG](clockxig7001dj4rqc2n6542r.html)
+[集成開發環境－GCC.ARM（#01）環境搭建](/sulfurandcu.io/clo2c1l6o00dh1wrqd2o379jc.html)
+[集成開發環境－GCC.ARM（#02）代碼編譯](/sulfurandcu.io/clo2c1l6400c71wrq3816hypq.html)
+[集成開發環境－GCC.ARM（#03）程序燒錄](/sulfurandcu.io/clo2c1l6600ca1wrqbvuabt0b.html)
+[集成開發環境－GCC.ARM（#04）快捷任務](/sulfurandcu.io/clo2c1l6700cd1wrqgjn53mgz.html)
+[集成開發環境－GCC.ARM（#05）程序調試](/sulfurandcu.io/clo2c1l6600cb1wrqewhnb8ey.html)
+[集成開發環境－DBG](/sulfurandcu.io/clockxig7001dj4rqc2n6542r.html)
 
 ---
 
