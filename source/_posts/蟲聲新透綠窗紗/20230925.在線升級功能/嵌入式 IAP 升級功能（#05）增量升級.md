@@ -14,7 +14,7 @@ categories: [開發筆記]
 - hdifflite/hpatchlite + tinyuz
 
 {% note info no-icon %}
-不過 bsdiff + quicklz 方案的內存開銷太大，現已不建議使用。
+不過 bsdiff + quicklz 方案的內存開銷太大，因此不建議使用。
 {% endnote %}
 
 <!-- more -->
@@ -123,7 +123,7 @@ IsCRCOK--是/繼續接收-->DoRecv
 
 {% mermaid flowchart TB %}
 %%{init: { "flowchart": { "curve": "basis" } } }%%
-Start(執行升級任務<br>開始)-->IsUpdateFlag{文件頭接收完畢}
+Start(執行升級任務<br>開始)-->IsUpdateFlag{升級文件接收完畢}
 IsUpdateFlag--否-->IsUpdateFlag
 IsUpdateFlag--是-->DoReadHead[從外存的第一個扇區中讀取升級信息]-->IsReadSucc{讀取成功}
 IsReadSucc--否-->Over1(結束)
