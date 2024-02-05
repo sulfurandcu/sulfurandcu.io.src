@@ -1,7 +1,0 @@
----
-title: 嵌入式 IAP 升級功能（#08）引導程序 bootloader 升級
-id: clnyhr2n5005a10rq54px6ho5
-date: 2023-10-01 00:00:08
-tags: [嵌入式軟件開發, 在線升級]
-categories: [開發筆記]
----
