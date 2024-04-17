@@ -13,7 +13,7 @@ categories: [开发笔记]
 [嵌入式 IAP 升级功能（#03）流程设计](/sulfurandcu.io/clnyhr2n3005010rqf3gcgp39.html)
 [嵌入式 IAP 升级功能（#04）技术细节](/sulfurandcu.io/clnyhr2n4005410rqfyjmedv1.html)
 [嵌入式 IAP 升级功能（#05）增量升级](/sulfurandcu.io/clnyhr2n4005710rqfv00ckub.html)
-[嵌入式 IAP 升级功能（#06）差分还原 haptchlite 移植](/sulfurandcu.io/clnyhr2n4005710rqfv00ckub.html)
+[嵌入式 IAP 升级功能（#06）差分还原 hpatchlite 移植](/sulfurandcu.io/clnyhr2n4005710rqfv00ckub.html)
 [嵌入式 IAP 升级功能（#07）压缩解压 tinyuztool 移植](/sulfurandcu.io/clnyhr2n4005710rqfv00ckub.html)
 [嵌入式 IAP 升级功能（#08）引导程序 bootloader 升级](/sulfurandcu.io/clnyhr2n5005a10rq54px6ho5.html)
 

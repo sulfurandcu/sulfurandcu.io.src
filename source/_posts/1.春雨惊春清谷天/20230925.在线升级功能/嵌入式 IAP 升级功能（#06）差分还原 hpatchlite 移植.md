@@ -1,5 +1,5 @@
 ---
-title: 嵌入式 IAP 升级功能（#06）差分还原 haptchlite 移植
+title: 嵌入式 IAP 升级功能（#06）差分还原 hpatchlite 移植
 id: cloidefbf00hzv0rqa7zg722r
 date: 2023-10-01 00:00:06
 tags: [嵌入式软件开发, 在线升级, 差分还原算法, 增量升级]
