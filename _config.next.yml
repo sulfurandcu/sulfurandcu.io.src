@@ -456,7 +456,7 @@ font:
   # Font settings for headlines (<h1> to <h6>).
   headings:
     external: true
-    family: EB Garamond
+    family: Iosevka Fixed Slab
     size:
 
   # Font settings for posts (.post-body).
