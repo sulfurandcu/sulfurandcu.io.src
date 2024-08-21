@@ -10,7 +10,7 @@ categories: [开发笔记]
 
 ![](diff.tools.compare.png)
 
-<!--more-->
+<!-- more -->
 
 ## 性能分析
 
