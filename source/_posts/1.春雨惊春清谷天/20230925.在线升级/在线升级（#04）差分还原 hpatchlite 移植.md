@@ -1,7 +1,7 @@
 ---
-title: 嵌入式 IAP 升级功能（#06）差分还原 hpatchlite 移植
+title: 嵌入式 IAP 在线升级－差分还原 hpatchlite 移植
 id: cloidefbf00hzv0rqa7zg722r
-date: 2023-10-01 00:00:06
+date: 2023-10-01 00:00:04
 tags: [嵌入式软件开发, 在线升级, 差分还原算法, 增量升级]
 categories: [开发笔记]
 ---
@@ -211,23 +211,26 @@ hpatchi_listener_t listener =
 ### 框架
 
 ```c
+// 该回调函数由用户提供
 hpi_BOOL 差分数据流读取函数()
 {
     由用户实现
 }
 
+// 该回调函数由用户提供
 hpi_BOOL 旧版数据流读取函数()
 {
     由用户实现
 }
 
+// 该回调函数由用户提供
 hpi_BOOL 还原数据流写入函数()
 {
     由用户实现
 }
 
-// 根据 hpatch_lite_open() + hpatch_lite_patch() 编写的还原程序
-hpi_patch_result_t hpi_patch(接收到的差分包大小, “还原缓冲大小”, “解压缓冲大小”)
+// 根据 hpatch_lite_open() 和 hpatch_lite_patch() 编写的还原程序
+hpi_patch_result_t hpi_patch(listener, “还原缓冲大小”, “解压缓冲大小”, “差分数据流读取函数”, “旧版数据流读取函数”, “还原数据流写入函数”)
 {
     // 差分数据流句柄：如果不需要该句柄的话可以将其定义为空指针
     hpatch_lite_open(“差分数据流句柄”, “差分数据流读取函数”, 输出“差分包信息”);
@@ -252,130 +255,229 @@ hpi_patch_result_t hpi_patch(接收到的差分包大小, “还原缓冲大小�
 
 ### 源码
 
-```c hpatch_port.h
-#ifndef __hpatch_port_h__
-#define __hpatch_port_h__
+```c hpatch_conf.h
+#ifndef __hpatch_conf_h__
+#define __hpatch_conf_h__
 
-#include <stddef.h>
-#include "malloc.h"
+#include "rtthread.h"
 
-#define hpi_malloc(x)                   mymalloc(x)
-#define hpi_free(x)                     myfree(x)
+#define hpi_malloc(x) rt_malloc(x)
+#define hpi_free(x)   rt_free(x)
 
-int hpi_patch(size_t diff_file_size, size_t patch_cache_size, size_t decompress_cache_size); // (差分文件的大小, 差分缓冲大小, 解压缓冲大小)
-
-#endif /* __hpatch_port_h__ */
+#endif /* __hpatch_conf_h__ */
 ```
 
-```c hpatch_port.c
-#include "hpatch_port.h"
-#include "fal.h"
+```c hpatch_impl.h
+#ifndef __hpatch_impl_h__
+#define __hpatch_impl_h__
+
 #include "hpatch_lite.h"
 #include "patch_types.h"
 #include "decompresser_demo.h"
 
-static size_t patch_file_len = 0;
-static size_t patch_file_rxd_pos = 0;
-static size_t newer_file_txd_pos = 0;
-
-// 从外部flash中以数据流的形式读取差分数据（由用户记录数据流的位置：读到哪儿了）（数据流结束时需要将 *data_size 置为当前所读数据的实际长度）（*data_size == decompress_cache_size）
-static hpi_BOOL _do_read_diff(hpi_TInputStreamHandle input_stream, hpi_byte *data, hpi_size_t *data_size)
+typedef enum hpi_patch_result_t
 {
-    unsigned int offset = 0;
+    HPATCHI_SUCCESS = 0,
+    HPATCHI_OPTIONS_ERROR,
+    HPATCHI_PATHTYPE_ERROR,
+    HPATCHI_OPENREAD_ERROR,
+    HPATCHI_OPENWRITE_ERROR,
+    HPATCHI_FILEREAD_ERROR,
+    HPATCHI_FILEWRITE_ERROR,
+    HPATCHI_FILEDATA_ERROR,
+    HPATCHI_FILECLOSE_ERROR,
+    HPATCHI_MEM_ERROR,
+    HPATCHI_COMPRESSTYPE_ERROR,
+    HPATCHI_DECOMPRESSER_DICT_ERROR,
+    HPATCHI_DECOMPRESSER_OPEN_ERROR,
+    HPATCHI_DECOMPRESSER_CLOSE_ERROR,
+    HPATCHI_PATCH_OPEN_ERROR = 20,
+    HPATCHI_PATCH_ERROR,
+} hpi_patch_result_t;
 
-    // TODO 由用户实现
-    if ((patch_file_rxd_pos + *data_size) > patch_file_len)
+typedef hpi_BOOL (*read_old_t)(struct hpatchi_listener_t *listener, hpi_pos_t addr, hpi_byte *data, hpi_size_t size);
+typedef hpi_BOOL (*write_new_t)(struct hpatchi_listener_t *listener, const hpi_byte *data, hpi_size_t size);
+
+int hpi_patch(hpatchi_listener_t *listener, int patch_cache_size, int decompress_cache_size, hpi_TInputStream_read _do_read_diff, read_old_t _do_read_old, write_new_t _do_write_new);
+
+#endif /* __hpatch_impl_h__ */
+```
+
+```c hpatch_impl.c
+#include "hpatch_impl.h"
+#include "hpatch_conf.h"
+
+hpi_patch_result_t hpi_patch(hpatchi_listener_t *listener, int patch_cache_size, int decompress_cache_size, hpi_TInputStream_read _do_read_diff, read_old_t _do_read_old, write_new_t _do_write_new)
+{
+    hpi_patch_result_t result = HPATCHI_SUCCESS;
+    hpi_byte *pmem            = 0;
+    hpi_byte *patch_cache;
+
+    hpi_compressType compress_type;
+    hpi_pos_t new_size;
+    hpi_pos_t uncompress_size;
+
+    hpi_BOOL patch_result;
+    patch_result = hpatch_lite_open(listener, _do_read_diff, &compress_type, &new_size, &uncompress_size);
+    if (patch_result != hpi_TRUE)
     {
-        *data_size = patch_file_len - patch_file_rxd_pos;
+        result = HPATCHI_PATCH_OPEN_ERROR;
+        goto clear;
     }
-    const struct fal_partition *partition = fal_partition_find("app_ziped");
-    int result = fal_partition_read(partition, offset+patch_file_rxd_pos, data, *data_size);
-    patch_file_rxd_pos += *data_size;
-    return hpi_TRUE;
-}
 
-// 从内部flash中以数据流的形式读取旧版程序
-static hpi_BOOL _do_read_old(struct hpatchi_listener_t *listener, hpi_pos_t read_pos, hpi_byte *data, hpi_size_t data_size)
-{
-    // TODO 由用户实现
-    const struct fal_partition *partition = fal_partition_find("app_older");
-    int result = fal_partition_read(partition, read_pos, data, data_size);
-    return hpi_TRUE;
-}
-
-// 将还原数据以数据流的形式写入外部flash中（由用户记录数据流的位置：写到哪儿了）
-static hpi_BOOL _do_write_new(struct hpatchi_listener_t *listener, const hpi_byte *data, hpi_size_t data_size)
-{
-    // TODO 由用户实现
-    const struct fal_partition *partition = fal_partition_find("app_newer");
-    int result = fal_partition_write(partition, newer_file_txd_pos, data, data_size);
-    newer_file_txd_pos += data_size;
-    return hpi_TRUE;
-}
-
-int hpi_patch(size_t diff_file_size, size_t patch_cache_size, size_t decompress_cache_size)
-{
-    int result = 0;
-    hpi_byte* pmem = 0;
-    hpi_byte* patch_cache;
-
-    patch_file_len = diff_file_size;
-    patch_file_rxd_pos = 0;
-    newer_file_txd_pos = 0;
-
-    hpi_TInputStreamHandle  void_stream_handle = NULL;
-    hpi_TInputStream_read   diff_stream_read = _do_read_diff;
-    hpi_compressType        compress_type;
-    hpi_pos_t               new_size;
-    hpi_pos_t               uncompress_size;
-
-    hpatch_lite_open(void_stream_handle, diff_stream_read, &compress_type, &new_size, &uncompress_size);
-
-    hpatchi_listener_t listener;
-    listener.read_old  = _do_read_old;
-    listener.write_new = _do_write_new;
+    listener->read_old  = _do_read_old;
+    listener->write_new = _do_write_new;
 
     switch (compress_type)
     {
-        case hpi_compressType_no:  // memory size: patch_cache_size
+        case hpi_compressType_no: // memory size: patch_cache_size
         {
-            pmem = (hpi_byte*)hpi_malloc(patch_cache_size);
+            pmem = (hpi_byte *)hpi_malloc(patch_cache_size);
+            if (!pmem)
+            {
+                result = HPATCHI_MEM_ERROR;
+                goto clear;
+            }
             patch_cache = pmem;
 
-            listener.diff_data = void_stream_handle;
-            listener.read_diff = diff_stream_read;
-        } break;
-    #ifdef _CompressPlugin_tuz
-        case hpi_compressType_tuz:  // requirements memory size: patch_cache_size + decompress_cache_size + decompress_dict_size
+            listener->diff_data = listener;
+            listener->read_diff = _do_read_diff;
+        }
+        break;
+#ifdef _CompressPlugin_tuz
+        case hpi_compressType_tuz: // requirements memory size: patch_cache_size + decompress_cache_size + decompress_dict_size
         {
             tuz_TStream tuz_stream_handle;
 
-            size_t decompress_dict_size  = _tuz_TStream_getReservedMemSize(void_stream_handle, diff_stream_read);
+            size_t decompress_dict_size = _tuz_TStream_getReservedMemSize(listener, _do_read_diff);
+            if (decompress_dict_size <= 0)
+            {
+                result = HPATCHI_DECOMPRESSER_DICT_ERROR;
+                goto clear;
+            }
 
-            pmem = (hpi_byte*)hpi_malloc(decompress_dict_size + decompress_cache_size + patch_cache_size);
+            pmem = (hpi_byte *)hpi_malloc(decompress_dict_size + decompress_cache_size + patch_cache_size);
+            if (!pmem)
+            {
+                result = HPATCHI_MEM_ERROR;
+                goto clear;
+            }
 
-            tuz_TStream_open(&tuz_stream_handle, void_stream_handle, diff_stream_read, pmem, (tuz_size_t)decompress_dict_size, (tuz_size_t)decompress_cache_size);
+            tuz_TResult tuz_result = tuz_TStream_open(&tuz_stream_handle, listener, _do_read_diff, pmem, (tuz_size_t)decompress_dict_size, (tuz_size_t)decompress_cache_size);
+            if (tuz_result != tuz_OK)
+            {
+                result = HPATCHI_DECOMPRESSER_OPEN_ERROR;
+                goto clear;
+            }
 
             patch_cache = pmem + decompress_dict_size + decompress_cache_size;
 
-            listener.diff_data = &tuz_stream_handle;
-            listener.read_diff = _tuz_TStream_decompress;
-        } break;
-    #endif
+            listener->diff_data = &tuz_stream_handle;
+            listener->read_diff = _tuz_TStream_decompress;
+        }
+        break;
+#endif
         default:
         {
+            result = HPATCHI_COMPRESSTYPE_ERROR;
             goto clear;
         }
     }
 
-    hpatch_lite_patch(&listener, new_size, patch_cache, (hpi_size_t)patch_cache_size);
+    patch_result = hpatch_lite_patch(listener, new_size, patch_cache, (hpi_size_t)patch_cache_size);
+    if (patch_result != hpi_TRUE)
+    {
+        result = HPATCHI_PATCH_ERROR;
+        goto clear;
+    }
 
 clear:
-    if (pmem) { hpi_free(pmem); pmem=0; }
+    if (pmem)
+    {
+        hpi_free(pmem);
+        pmem = 0;
+    }
     return result;
 }
 ```
 
-{% note info no-icon %}
-为了使代码看起来更加简洁，因此例程中没有进行任何异常处理。
-{% endnote %}
+```c hpatch_demo.c
+#include "hpatch_impl.h"
+
+typedef struct hpatchi_instance_t
+{
+    hpatchi_listener_t parent;
+    int patch_file_offset;
+    int patch_file_len;
+    int patch_read_pos;
+    int newer_file_len;
+    int newer_write_pos;
+} hpatchi_instance_t;
+
+// 以数据流的形式读取空文件
+hpi_BOOL _do_read_empty(struct hpatchi_listener_t *listener, hpi_pos_t addr, hpi_byte *data, hpi_size_t size)
+{
+    memset(data, 0, size);
+    return hpi_TRUE;
+}
+
+// 以数据流的形式读取旧程序
+hpi_BOOL _do_read_old(struct hpatchi_listener_t *listener, hpi_pos_t addr, hpi_byte *data, hpi_size_t size)
+{
+    int result = update_fetch_runapp(addr, data, size);
+    if (result < 0) { return hpi_FALSE; }
+    return hpi_TRUE;
+}
+
+// 以数据流的形式读取补丁包（由用户记录数据流的位置：读到哪儿了）
+hpi_BOOL _do_read_patch(hpi_TInputStreamHandle input_stream, hpi_byte *data, hpi_size_t *size)
+{
+    hpatchi_instance_t *instance = (hpatchi_instance_t *)input_stream;
+
+    // 数据流结束时需要将 *size 置为当前所读数据的实际长度（*size == decompress_cache_size）
+    if ((instance->patch_read_pos + *size) > instance->patch_file_len)
+    {
+        *size = instance->patch_file_len - instance->patch_read_pos;
+    }
+
+    int result = update_fetch_backup(instance->patch_file_offset + instance->patch_read_pos, data, *size);
+    if (result < 0) { return hpi_FALSE; }
+    instance->patch_read_pos += *size;
+    return hpi_TRUE;
+}
+
+// 以数据流的形式写入差分还原的数据（由用户记录数据流的位置：写到哪儿了）
+hpi_BOOL _do_write_new(struct hpatchi_listener_t *listener, const hpi_byte *data, hpi_size_t size)
+{
+    hpatchi_instance_t *instance = (hpatchi_instance_t *)listener;
+
+    int percent = instance->newer_write_pos * 100 / instance->newer_file_len;
+    if (percent % 5 == 0 && percent < 100)
+    {
+        rt_kprintf("\b\b\b%02d%%", percent);
+    }
+
+    int result = update_write_decode(instance->newer_write_pos, (unsigned char *)data, size);
+    if (result < 0) { return hpi_FALSE; }
+    instance->newer_write_pos += size;
+    return hpi_TRUE;
+}
+
+void demo(void)
+{
+    hpatchi_instance_t instance = {0};
+    instance.patch_file_offset  = update_pack->header_size; // 从升级包的包头中获取差分数据的地址
+    instance.patch_file_len     = update_pack->remain_size; // 从升级包的包头中获取差分数据的大小
+    instance.newer_file_len     = update_pack->newapp_size; // 从升级包的包头中获取新版程序的大小
+
+    // 差分全量升级
+    {
+        hpi_patch(&instance.parent, 128, 128, _do_read_patch, _do_read_empty, _do_write_new);
+    }
+
+    // 差分增量升级
+    {
+        hpi_patch(&instance.parent, 128, 128, _do_read_patch, _do_read_old, _do_write_new);
+    }
+}
+```
